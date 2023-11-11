@@ -2,6 +2,8 @@
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using GuitarShop.Models;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using System.ComponentModel.Design;
 
 namespace GuitarShop.Controllers
 {
@@ -31,11 +33,23 @@ namespace GuitarShop.Controllers
                 products = context.Products
                     .OrderBy(p => p.ProductID).ToList();
             }
+            else if(id == "Strings")
+            {
+                var query =
+                        from product in context.Products
+                        join category in context.Categories on product.CategoryID equals category.CategoryID
+                        where category.Name == "Basses" || category.Name == "Guitars"
+                        orderby product.ProductID
+                        select product;
+
+                products = query.ToList();
+            }
             else
             {
                 products = context.Products
                     .Where(p => p.Category.Name == id)
                     .OrderBy(p => p.ProductID).ToList();
+
             }
 
             // use ViewBag to pass data to view
