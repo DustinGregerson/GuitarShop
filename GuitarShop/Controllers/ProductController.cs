@@ -35,6 +35,8 @@ namespace GuitarShop.Controllers
             }
             else if(id == "Strings")
             {
+                //This is makeing the LINQ function calls but in a sql format, so this is
+                //still a LINQ method chain.
                 var query =
                         from product in context.Products
                         join category in context.Categories on product.CategoryID equals category.CategoryID
